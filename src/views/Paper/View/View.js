@@ -3,14 +3,14 @@ import "../Paper.scss";
 import {
   Button,
   Table,
-  Select,
+  Drawer,
   Modal,
   Input,
   message,
   Form,
   Space,
 } from "antd";
-import { listPaper, delPaper } from "../../../request/api-paper";
+import { listPaper, delPaper, getPaper } from "../../../request/api-paper";
 
 export default function View() {
   const paperColumns = [
@@ -40,7 +40,13 @@ export default function View() {
       key: "ope",
       render: (_, record) => (
         <Space>
-          <Button size="small" type="primary" onClick={() => {}}>
+          <Button
+            size="small"
+            type="primary"
+            onClick={() => {
+              getPaperDetail(record);
+            }}
+          >
             查看
           </Button>
           <Button
@@ -60,6 +66,7 @@ export default function View() {
   // 试卷列表
   const [paperList, setpaperList] = useState([]);
 
+  // 获取试卷列表
   const getPaperList = () => {
     listPaper({ current: 1, size: 10 }).then((res) => {
       console.log(res);
@@ -67,6 +74,24 @@ export default function View() {
     });
   };
 
+  // 查看试卷详情
+  const [paperDrawerOpen, setPaperDrawerOpen] = useState(false);
+  const [paperDetail, setPaperDetail] = useState({});
+  // 根据试卷id获取试卷详情
+  const getPaperDetail = (record) => {
+    setPaperDrawerOpen(true);
+    getPaper(record.id).then((res) => {
+      if (res.code === 200) {
+        message.success(res.msg);
+        setPaperDetail(res.data);
+        console.log(paperDetail);
+      } else {
+        message.error(res.msg);
+      }
+    });
+  };
+
+  //   删除试卷
   const handleDelete = async (id) => {
     try {
       const res = await delPaper(id);
@@ -102,6 +127,17 @@ export default function View() {
 
       {/* 试卷列表 */}
       <Table dataSource={paperList} columns={paperColumns} rowKey="id" />
+
+      <Drawer
+        title="试卷详情"
+        onClose={() => setPaperDrawerOpen(false)}
+        open={paperDrawerOpen}
+        size="large"
+      >
+        <div>
+          <div>试卷名称：{paperDetail}</div>
+        </div>
+      </Drawer>
     </div>
   );
 }
