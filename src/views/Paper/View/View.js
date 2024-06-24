@@ -11,6 +11,7 @@ import {
   Space,
 } from "antd";
 import { listPaper, delPaper, getPaper } from "../../../request/api-paper";
+import { render } from "@testing-library/react";
 
 export default function View() {
   const paperColumns = [
@@ -26,7 +27,7 @@ export default function View() {
       key: "name",
     },
     {
-      title: "创建者",
+      title: "出卷人",
       dataIndex: "teacherName",
       key: "teacherName",
     },
@@ -34,6 +35,19 @@ export default function View() {
       title: "总分",
       dataIndex: "totalScore",
       key: "totalScore",
+    },
+    {
+      title: "难度",
+      dataIndex: "difficulty",
+      key: "difficulty",
+      render: (_, record) => {
+        const difficulty = {
+          0: "简单",
+          1: "中等",
+          2: "困难",
+        };
+        return record.difficulty ? difficulty[record.difficulty] : "-";
+      },
     },
     {
       title: "操作",
@@ -76,15 +90,15 @@ export default function View() {
 
   // 查看试卷详情
   const [paperDrawerOpen, setPaperDrawerOpen] = useState(false);
-//   const [paperDetail, setPaperDetail] = useState({});
+  const [paperDetail, setPaperDetail] = useState({});
   // 根据试卷id获取试卷详情
   const getPaperDetail = (record) => {
     setPaperDrawerOpen(true);
     getPaper(record.id).then((res) => {
       if (res.code === 200) {
         message.success(res.msg);
-        // setPaperDetail(res.data);
-        // console.log(paperDetail);
+        setPaperDetail(res.data);
+        console.log(res.data);
       } else {
         message.error(res.msg);
       }
@@ -135,7 +149,61 @@ export default function View() {
         size="large"
       >
         <div>
-          {/* <div>试卷名称：{paperDetail}</div> */}
+          <div>试卷编号：{paperDetail.id}</div>
+          <div>试卷名称：{paperDetail.name}</div>
+          <div>出卷人：{paperDetail.teacherName}</div>
+          <div>总分：{paperDetail.totalScore}</div>
+          <div>
+            难度：{paperDetail.difficulty ? paperDetail.difficulty : "-"}
+          </div>
+          <div>
+            <div>单选题</div>
+            {paperDetail.singleSelectQuestionVos?.length === 0 ? (
+              "无单选题"
+            ) : (
+              <ul>
+                {paperDetail.singleSelectQuestionVos?.map((item) => (
+                  <li>{JSON.stringify(item)}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div>
+            <div>多选题</div>
+            {paperDetail.multiSelectQuestionVos?.length === 0 ? (
+              "无多选题"
+            ) : (
+              <ul>
+                {paperDetail.multiSelectQuestionVos?.map((item) => (
+                  <li>{JSON.stringify(item)}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div>
+            <div>填空题</div>
+            {paperDetail.fillQuestionVos?.length === 0 ? (
+              "无填空题"
+            ) : (
+              <ul>
+                {paperDetail.fillQuestionVos?.map((item) => (
+                  <li>{JSON.stringify(item)}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div>
+            <div>主观题</div>
+            {paperDetail.subjectQuestionVos?.length === 0 ? (
+              "无主观题"
+            ) : (
+              <ul>
+                {paperDetail.subjectQuestionVos?.map((item) => (
+                  <li>{JSON.stringify(item)}</li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </Drawer>
     </div>
