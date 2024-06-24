@@ -76,15 +76,15 @@ export default function View() {
 
   // 查看试卷详情
   const [paperDrawerOpen, setPaperDrawerOpen] = useState(false);
-  const [paperDetail, setPaperDetail] = useState({});
+//   const [paperDetail, setPaperDetail] = useState({});
   // 根据试卷id获取试卷详情
   const getPaperDetail = (record) => {
     setPaperDrawerOpen(true);
     getPaper(record.id).then((res) => {
       if (res.code === 200) {
         message.success(res.msg);
-        setPaperDetail(res.data);
-        console.log(paperDetail);
+        // setPaperDetail(res.data);
+        // console.log(paperDetail);
       } else {
         message.error(res.msg);
       }
@@ -135,7 +135,7 @@ export default function View() {
         size="large"
       >
         <div>
-          <div>试卷名称：{paperDetail}</div>
+          {/* <div>试卷名称：{paperDetail}</div> */}
         </div>
       </Drawer>
     </div>
