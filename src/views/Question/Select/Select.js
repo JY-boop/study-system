@@ -78,13 +78,10 @@ const SelectQuestion = () => {
         correct: values.items.includes(4) ? 1 : 0,
       },
     ];
-    // console.log(formatItems, 111);
     values.items = formatItems;
-    console.log("Success:", values);
     saveSelect(values).then((res) => {
       if (res.code === 200) {
         message.success(res.msg);
-        // getClassList(); // 重新获取班级列表数据
       } else {
         message.error(res.msg);
       }

@@ -12,7 +12,7 @@ import {
 } from "antd";
 import {
   getKnowledge,
-  saveSelect,
+  saveFill,
   modifyKnowledge,
 } from "../../../request/api-question";
 import {
@@ -44,11 +44,6 @@ const InputQuestion = () => {
   // 知识点列表
   const [knowledgeList, setKnowledgeList] = useState([]);
 
-  const [itemA, setItemsA] = useState("");
-  const [itemB, setItemsB] = useState("");
-  const [itemC, setItemsC] = useState("");
-  const [itemD, setItemsD] = useState("");
-
   const getKnowledgeList = () => {
     getKnowledge().then((res) => {
       setKnowledgeList(res.data);
@@ -56,35 +51,9 @@ const InputQuestion = () => {
   };
 
   const onFinish = (values) => {
-    const formatItems = [
-      {
-        code: 1,
-        description: itemA,
-        correct: values.items.includes(1) ? 1 : 0,
-      },
-      {
-        code: 2,
-        description: itemB,
-        correct: values.items.includes(2) ? 1 : 0,
-      },
-      {
-        code: 3,
-        description: itemC,
-        correct: values.items.includes(3) ? 1 : 0,
-      },
-      {
-        code: 4,
-        description: itemD,
-        correct: values.items.includes(4) ? 1 : 0,
-      },
-    ];
-    // console.log(formatItems, 111);
-    values.items = formatItems;
-    console.log("Success:", values);
-    saveSelect(values).then((res) => {
+    saveFill(values).then((res) => {
       if (res.code === 200) {
         message.success(res.msg);
-        // getClassList(); // 重新获取班级列表数据
       } else {
         message.error(res.msg);
       }

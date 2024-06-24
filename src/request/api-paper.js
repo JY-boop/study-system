@@ -16,7 +16,7 @@ export const getPaper = function (paperId) {
 };
 
 // 60103-删除试卷
-export const delQuestion = function (paperId) {
+export const delPaper = function (paperId) {
   return request.delete(`/paper/deletePaper/${paperId}`);
 };
 

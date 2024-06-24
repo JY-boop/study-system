@@ -13,6 +13,7 @@ import Input from "../views/Question/Input/Input";
 import Subjective from "../views/Question/Subjective/Subjective";
 import Knowledge from "../views/Question/Knowledge/Knowledge";
 import Paper from "../views/Paper/Paper";
+import View from "../views/Paper/View/View";
 import Auto from "../views/Paper/Auto/Auto";
 import Manual from "../views/Paper/Manual/Manual";
 
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
         path: "paper",
         element: <Paper />,
         children: [
+          {
+            path: "view",
+            element: <View />,
+          },
           {
             path: "auto",
             element: <Auto />,
