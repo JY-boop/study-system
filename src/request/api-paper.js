@@ -27,6 +27,5 @@ export const modifyPaper = function (params) {
 
 // 60105-根据条件分页获取试卷
 export const listPaper = function (params) {
-  return request.get("/paper/listPaper", params);
+  return request.get("/paper/listPaper", { params });
 };
-

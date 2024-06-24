@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "../Paper.scss";
-import { Button, Table, Select, Modal, Input, message, Form } from "antd";
+import {
+  Button,
+  Table,
+  Select,
+  Modal,
+  Input,
+  message,
+  Form,
+  Space,
+} from "antd";
 import { listPaper, delPaper } from "../../../request/api-paper";
 
 export default function View() {
@@ -12,41 +21,38 @@ export default function View() {
     },
 
     {
-      title: "描述",
-      dataIndex: "description",
-      key: "description",
+      title: "名称",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: "答案",
-      dataIndex: "answer",
-      key: "answer",
+      title: "创建者",
+      dataIndex: "teacherName",
+      key: "teacherName",
     },
     {
-      title: "难度",
-      dataIndex: "difficulty",
-      key: "difficulty",
-      render: (_, record) => {
-        const difficulty = {
-          0: "简单",
-          1: "中等",
-          2: "困难",
-        };
-        return difficulty[record.difficulty];
-      },
+      title: "总分",
+      dataIndex: "totalScore",
+      key: "totalScore",
     },
     {
       title: "操作",
       key: "ope",
       render: (_, record) => (
-        <Button
-          size="small"
-          danger
-          onClick={() => {
-            handleDelete(record.id);
-          }}
-        >
-          删除
-        </Button>
+        <Space>
+          <Button size="small" type="primary" onClick={() => {}}>
+            查看
+          </Button>
+          <Button
+            size="small"
+            danger
+            onClick={() => {
+              handleDelete(record.id);
+            }}
+          >
+            删除
+          </Button>
+        </Space>
       ),
     },
   ];
@@ -57,7 +63,7 @@ export default function View() {
   const getPaperList = () => {
     listPaper({ current: 1, size: 10 }).then((res) => {
       console.log(res);
-    //   setpaperList(res?.data?.records || []);
+      setpaperList(res?.data?.records || []);
     });
   };
 

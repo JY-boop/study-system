@@ -71,7 +71,7 @@ const subMenuList = [
     {
       key: "view",
       icon: React.createElement(UserOutlined),
-      label: "试卷展示",
+      label: "试卷列表",
     },
     {
       key: "auto",
