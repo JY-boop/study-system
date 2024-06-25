@@ -1,7 +1,7 @@
 {
     "routes": [
       {
-        "src": "/teacherManagement/(.*)",
+        "src": "/api/(.*)",
         "dest": "http://110.41.83.180/$1"
       }
     ]
