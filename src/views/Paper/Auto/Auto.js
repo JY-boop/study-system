@@ -10,17 +10,14 @@ import {
   Select,
   TreeSelect,
 } from "antd";
-import {
-  getKnowledge,
-  saveFill,
-  modifyKnowledge,
-} from "../../../request/api-question";
+import { addAutoPaper } from "../../../request/api-paper";
 import {
   transform,
   transform1,
   questionType,
   difficultyType,
 } from "../../const";
+import { type } from "@testing-library/user-event/dist/type";
 
 const formItemLayout = {
   labelCol: {
@@ -40,18 +37,61 @@ const formItemLayout = {
     },
   },
 };
-const Auto = () => {
-  // 知识点列表
-  const [knowledgeList, setKnowledgeList] = useState([]);
 
-  const getKnowledgeList = () => {
-    getKnowledge().then((res) => {
-      setKnowledgeList(res.data);
-    });
+const Auto = () => {
+  const [questionList, setQuestionList] = useState([
+    {
+      type: 0,
+      difficulty: undefined,
+      num: undefined,
+    },
+    {
+      type: 1,
+      difficulty: undefined,
+      num: undefined,
+    },
+    {
+      type: 2,
+      difficulty: undefined,
+      num: undefined,
+    },
+    {
+      type: 3,
+      difficulty: undefined,
+      num: undefined,
+    },
+  ]);
+
+  const handleSelectChange = (index, name, value) => {
+    const newArray = questionList;
+    newArray[index][name] = value;
+    setQuestionList([...newArray]);
   };
 
   const onFinish = (values) => {
-    saveFill(values).then((res) => {
+    // console.log(questionList, 11);
+    const typeList = [];
+    questionList.map((item) => {
+      if (item.type)
+        typeList.push({
+          type: item.type,
+          difficultyNum: [
+            {
+              difficulty: item.difficulty,
+              num: item.num,
+            },
+          ],
+        });
+    });
+
+    const param = {
+      name: values.name,
+      totalScore: values.totalScore,
+      typeList: typeList,
+    };
+
+    console.log(param);
+    addAutoPaper(param).then((res) => {
       if (res.code === 200) {
         message.success(res.msg);
       } else {
@@ -60,9 +100,7 @@ const Auto = () => {
     });
   };
 
-  useEffect(() => {
-    getKnowledgeList();
-  }, []);
+  useEffect(() => {}, []);
   return (
     <Form
       {...formItemLayout}
@@ -84,7 +122,6 @@ const Auto = () => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="总分"
         name="totalScore"
@@ -101,31 +138,45 @@ const Auto = () => {
           }}
         />
       </Form.Item>
+      <Form.Item label="题目">
+        {questionList.map((item, index) => (
+          <div style={{ marginBottom: 10 }} key={index}>
+            <Select
+              style={{
+                width: "30%",
+                marginRight: "5%",
+              }}
+              options={transform(questionType, false)}
+              placeholder="类型"
+              allowClear
+              value={item?.type}
+              onChange={(value) => handleSelectChange(index, "type", value)}
+            />
 
-      <Form.Item
-        label="类型"
-        name="type"
-        rules={[
-          {
-            required: true,
-            message: "Please input!",
-          },
-        ]}
-      >
-        <Select options={transform(questionType, false)} />
-      </Form.Item>
+            <Select
+              style={{
+                width: "30%",
+                marginRight: "5%",
+              }}
+              options={transform(difficultyType, false)}
+              placeholder="难度"
+              allowClear
+              value={item?.difficulty}
+              onChange={(value) =>
+                handleSelectChange(index, "difficulty", value)
+              }
+            />
 
-      <Form.Item
-        label="难度"
-        name="difficulty"
-        rules={[
-          {
-            required: true,
-            message: "Please input!",
-          },
-        ]}
-      >
-        <Select options={transform(difficultyType, false)} />
+            <InputNumber
+              style={{
+                width: "30%",
+              }}
+              placeholder="数量"
+              value={item?.num}
+              onChange={(value) => handleSelectChange(index, "num", value)}
+            />
+          </div>
+        ))}
       </Form.Item>
 
       <Form.Item

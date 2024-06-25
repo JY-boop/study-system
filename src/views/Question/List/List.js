@@ -65,8 +65,6 @@ export default function List() {
 
   const options = transform(questionType)
 
-  console.log(options)
-
   // 题目列表
   const [questionList, setQuestionList] = useState([]);
   const [filter, setFilter] = useState({ current: 1, size: 999, type: 'all' });

@@ -11,7 +11,12 @@ import {
   Space,
 } from "antd";
 import { listPaper, delPaper, getPaper } from "../../../request/api-paper";
-import { render } from "@testing-library/react";
+import {
+  transform,
+  answerType,
+  questionType,
+  difficultyType,
+} from "../../const";
 
 export default function View() {
   const paperColumns = [
@@ -82,7 +87,7 @@ export default function View() {
 
   // 获取试卷列表
   const getPaperList = () => {
-    listPaper({ current: 1, size: 10 }).then((res) => {
+    listPaper({ current: 1, size: 999 }).then((res) => {
       console.log(res);
       setpaperList(res?.data?.records || []);
     });
@@ -149,13 +154,16 @@ export default function View() {
         size="large"
       >
         <div>
-          <div>试卷编号：{paperDetail.id}</div>
-          <div>试卷名称：{paperDetail.name}</div>
-          <div>出卷人：{paperDetail.teacherName}</div>
-          <div>总分：{paperDetail.totalScore}</div>
+          <div style={{ marginBottom: 10 }}>试卷编号：{paperDetail.id}</div>
+          <div style={{ marginBottom: 10 }}>试卷名称：{paperDetail.name}</div>
+          <div style={{ marginBottom: 10 }}>
+            出卷人：{paperDetail.teacherName}
+          </div>
+          <div style={{ marginBottom: 10 }}>总分：{paperDetail.totalScore}</div>
           <div>
             难度：{paperDetail.difficulty ? paperDetail.difficulty : "-"}
           </div>
+          <hr></hr>
           <div>
             <div>单选题</div>
             {paperDetail.singleSelectQuestionVos?.length === 0 ? (
@@ -163,10 +171,23 @@ export default function View() {
             ) : (
               <ul>
                 {paperDetail.singleSelectQuestionVos?.map((item) => (
-                  <li>{JSON.stringify(item)}</li>
+                  <li>
+                    <div>题目：{item.description}</div>
+                    <div>分值：{item.score}</div>
+                    <div>
+                      选项：
+                      <br />
+                      {item.selectItems.map((item) => (
+                        <>
+                          {answerType[item.code]}: {item.description} <br />
+                        </>
+                      ))}
+                    </div>
+                  </li>
                 ))}
               </ul>
             )}
+            <hr></hr>
           </div>
           <div>
             <div>多选题</div>
@@ -175,10 +196,23 @@ export default function View() {
             ) : (
               <ul>
                 {paperDetail.multiSelectQuestionVos?.map((item) => (
-                  <li>{JSON.stringify(item)}</li>
+                  <li>
+                    <div>题目：{item.description}</div>
+                    <div>分值：{item.score}</div>
+                    <div>
+                      选项：
+                      <br />
+                      {item.selectItems.map((item) => (
+                        <>
+                          {answerType[item.code]}: {item.description} <br />
+                        </>
+                      ))}
+                    </div>
+                  </li>
                 ))}
               </ul>
             )}
+            <hr></hr>
           </div>
           <div>
             <div>填空题</div>
@@ -187,10 +221,14 @@ export default function View() {
             ) : (
               <ul>
                 {paperDetail.fillQuestionVos?.map((item) => (
-                  <li>{JSON.stringify(item)}</li>
+                  <li>
+                    <div>题目：{item.description}</div>
+                    <div>分值：{item.score}</div>
+                  </li>
                 ))}
               </ul>
             )}
+            <hr></hr>
           </div>
           <div>
             <div>主观题</div>

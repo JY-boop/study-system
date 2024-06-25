@@ -11,6 +11,12 @@ export const difficultyType = {
   2: "困难",
 };
 
+export const answerType = {
+  1: "A",
+  2: "B",
+  3: "C",
+  4: "D",
+};
 export const transform = (obj, addAll = true) => {
   const result = Object.keys(obj).map((item) => ({
     value: parseInt(item),
