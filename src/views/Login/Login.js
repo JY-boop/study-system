@@ -1,12 +1,17 @@
 import router from "../../router/IndexRouter";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, message } from "antd";
 import "./Login.scss";
 
 export default function Login() {
   // 通过校验
   const onFinish = (values) => {
     console.log("Success:", values);
-    router.navigate("/system");
+    if (values.username === "admin" && values.password === '123456') {
+      router.navigate("/system");
+      message.success("登录成功");
+    } else {
+      message.error("登录失败");
+    }
   };
   // 校验失败
   const onFinishFailed = (errorInfo) => {
