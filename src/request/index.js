@@ -3,7 +3,7 @@ import { message } from "antd";
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: "http://110.41.83.180/api",
+  baseURL: "http://110.41.83.180",
   timeout: 5000, // 请求超时时间
 });
 
