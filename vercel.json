@@ -2,7 +2,7 @@
     "routes": [
       {
         "src": "/teacherManagement/(.*)",
-        "dest": "http://110.41.83.180"
+        "dest": "http://110.41.83.180/$1"
       }
     ]
   }
