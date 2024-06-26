@@ -172,16 +172,21 @@ export default function View() {
               <ul>
                 {paperDetail.singleSelectQuestionVos?.map((item) => (
                   <li>
-                    <div>题目：{item.description}</div>
-                    <div>分值：{item.score}</div>
                     <div>
-                      选项：
-                      <br />
+                      题目：{item.description}（分值：{item.score}）
+                    </div>
+                    <div>
                       {item.selectItems.map((item) => (
                         <>
                           {answerType[item.code]}: {item.description} <br />
                         </>
                       ))}
+                    </div>
+                    <div>
+                      答案：
+                      {item.selectItems
+                        ?.filter((item) => item.correct)
+                        .map((item) => answerType[item.code])}
                     </div>
                   </li>
                 ))}
@@ -197,16 +202,21 @@ export default function View() {
               <ul>
                 {paperDetail.multiSelectQuestionVos?.map((item) => (
                   <li>
-                    <div>题目：{item.description}</div>
-                    <div>分值：{item.score}</div>
                     <div>
-                      选项：
-                      <br />
+                      题目：{item.description}（分值：{item.score}）
+                    </div>
+                    <div>
                       {item.selectItems.map((item) => (
                         <>
                           {answerType[item.code]}: {item.description} <br />
                         </>
                       ))}
+                      <div>
+                        答案：
+                        {item.selectItems
+                          ?.filter((item) => item.correct)
+                          .map((item) => answerType[item.code])}
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -222,8 +232,13 @@ export default function View() {
               <ul>
                 {paperDetail.fillQuestionVos?.map((item) => (
                   <li>
-                    <div>题目：{item.description}</div>
-                    <div>分值：{item.score}</div>
+                    <div>
+                      题目：{item.description}（分值：{item.score}）
+                    </div>
+                    <div>
+                      答案：
+                      {item.answer}
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -237,7 +252,15 @@ export default function View() {
             ) : (
               <ul>
                 {paperDetail.subjectQuestionVos?.map((item) => (
-                  <li>{JSON.stringify(item)}</li>
+                  <li>
+                    <div>
+                      题目：{item.description}（分值：{item.score}）
+                    </div>
+                    <div>
+                      答案：
+                      {item.answer}
+                    </div>
+                  </li>
                 ))}
               </ul>
             )}
